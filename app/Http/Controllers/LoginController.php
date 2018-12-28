@@ -19,20 +19,20 @@ class LoginController extends Controller
         if($validator->fails()) {
             return back()->withErrors($validator, 'login')->withInput();
         }
+        
+        $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $request->email)->first();
-    
-        if(!$user || decrypt($user->password) != $request->password) {
-            return back()->with('errorLogin', 'Username or Password is wrong')->withInput();
+        if(auth()->attempt($credentials)) {
+            return back()->with('success', 'Login Success');
         }
         else {
-            session(['currentUser' => $user]);
-            return back()->with('success', 'Login Success');
+            return back()->with('errorLogin', 'Username or Password is wrong')->withInput();
         }
     }
 
     public function logout() {
         session()->flush();
+        auth()->logout();
         return redirect('/');
     }
 }

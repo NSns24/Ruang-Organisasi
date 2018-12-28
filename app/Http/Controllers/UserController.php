@@ -25,7 +25,7 @@ class UserController extends Controller
             return back()->withErrors($validator, 'register')->withInput();
         }
 
-        $request['password'] = encrypt($request->password);
+        $request['password'] = hash()->make($request->password);
 
         $user = User::create($request->all());
 

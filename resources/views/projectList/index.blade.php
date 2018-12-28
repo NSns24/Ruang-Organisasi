@@ -147,7 +147,7 @@
                 <div class="event-name align-left mbr-white ">
                     <h4 class="mbr-fonts-style display-5">EVENT NAME</h4>
                 </div>
-                <div class="countdown align-center py-2" data-due-date="{{ $projects->first()->project_deadline or "" }}"></div>
+                <div class="countdown align-center py-2" data-due-date="{{ $projects->first() ?: "" }}"></div>
                 <div class="daysCountdown" title="Days"></div>
                 <div class="hoursCountdown" title="Hours"></div>
                 <div class="minutesCountdown" title="Minutes"></div>
@@ -236,7 +236,8 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/page/web/assets/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/page/web/assets/jquery/jquery.min.js') }}"></script> --}}
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('assets/page/popper/popper.min.js') }}"></script>
     <script src="{{ asset('assets/page/tether/tether.min.js') }}"></script>
     <script src="{{ asset('assets/page/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -287,6 +288,11 @@
             $('div[data-target="#modal-new-project"]').on('click', () => {
                 $('#form-new-project').find('input[type!="hidden"]').val('');
                 $('#form-new-project').find('.alert').remove();
+            });
+
+            Echo.private('chat')
+            .listen('.Tes', (e) => {
+                console.log(e);
             });
         });
     </script>

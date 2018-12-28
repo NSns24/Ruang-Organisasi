@@ -202,6 +202,10 @@
             var $modalDialog = $(this).find('.modal-dialog');
             var $currentImg = $modalDialog.find('.carousel-item.active > img');
 
+            if(!$currentImg.length) {
+                return;
+            }
+
             if ($modalDialog.find('.carousel-item.prev > img, .carousel-item.next > img').length) {
                 $currentImg = $modalDialog.find('.carousel-item.prev > img, .carousel-item.next > img').eq(0);
             }

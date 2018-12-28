@@ -18,7 +18,11 @@ Route::get('/', function () {
 Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 Route::resource('user', 'UserController');
-Route::resource('project', 'ProjectController');
+
+Route::group(['middleware' => ['login']], function() {
+    Route::resource('project', 'ProjectController');
+});
+
 Route::post('project/update_progress', 'ProjectController@updateProgress');
 Route::post('project/new_member', 'ProjectController@newMember');
 

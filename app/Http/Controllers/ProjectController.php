@@ -8,6 +8,7 @@ use App\ProjectDetail;
 use App\Invitation;
 use App\User;
 use App\Helpers\Helper;
+use App\Events\WebSocketEvent;
 
 class ProjectController extends Controller
 {
@@ -99,6 +100,7 @@ class ProjectController extends Controller
         $invitation->email = $request->email;
 
         if($invitation->save()) {
+            broadcast(new AddMemberEvent($invitation->user_id));
             return back()->with('success', 'Invitation has been sent. Please wait for your friend to accept it'); 
         }
 
