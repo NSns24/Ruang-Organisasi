@@ -28,13 +28,13 @@
             <li class="nav-item">
                 <a class="nav-link link text-white display-4" href="{{ url('chat/'.$project->id) }}">
                     <span class="mbri-chat mbr-iconfont mbr-iconfont-btn"></span>
-                    Chat
+                    Chats
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link link text-white display-4" href="#">
+                <a class="nav-link link text-white display-4" href="{{ url('jobs/'.$project->id) }}">
                     <span class="mbri-contact-form mbr-iconfont mbr-iconfont-btn"></span>
-                    Assign Jobs
+                    Jobs
                 </a>
             </li>
             <li class="nav-item">

@@ -19,9 +19,9 @@ Broadcast::channel('invitation-respond.{id}', function($user, $id) {
     return (int)$user->id === (int)$id;
 });
 
-Broadcast::channel('chat.{project_id}.{chat_type}', function($user, $project_id, $chat_type) {
-	if(is_numeric($chat_type)) {
-		return (int)$user->id === (int)$chat_type;
+Broadcast::channel('chat.{project_id}.{user_to}', function($user, $project_id, $user_to) {
+	if($user_to != 0) {
+		return (int)$user->id === (int)$user_to;
 	}
 	else {
 		return true;

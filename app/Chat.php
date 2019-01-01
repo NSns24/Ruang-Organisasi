@@ -22,8 +22,4 @@ class Chat extends Model
     public function userFrom() {
     	return $this->belongsTo(User::class, 'user_from');
     }
-
-    public function chatType() {
-        return ($this->user_to == null) ? 'group' : $this->user_to;
-    }
 }

@@ -6,22 +6,18 @@ use Illuminate\Http\Request;
 use App\Helpers\Helper;
 use App\Project;
 use App\Chat;
+use App\ProjectDetail;
 use App\Events\ChatEvent;
 
 class ChatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($id)
-    {   
+    public function index($id) {   
         if(Helper::checkProjectAccess($id, auth()->id())) {
             $project = Project::findOrFail($id);
-            $chats = Chat::where('project_id', $id)->whereNull('user_to')->orderBy('created_at', 'asc')->get();
+            $chats = Chat::where('project_id', $id)->where('user_to', 0)->orderBy('created_at', 'asc')->get();
+            $friends  = ProjectDetail::where('project_id', $id)->where('user_id', '<>', auth()->id())->join('users', 'users.id', '=', 'project_details.user_id')->select('users.*')->get();
 
-            return view('chat.index', compact('project', 'chats'));
+            return view('chat.index', compact('project', 'chats', 'friends'));
         }
         else {
             abort(404);
@@ -40,8 +36,7 @@ class ChatController extends Controller
                 $chat = $chat->where('id', $chat->id)->with('userFrom')->first();
                 $chat->date = $chat->getDate();
                 $chat->time = $chat->getTime();
-                $chat->user_to = 0;
-                broadcast(new ChatEvent($chat));
+                broadcast(new ChatEvent($chat))->toOthers();
                 return $chat;
             }
         }
@@ -49,69 +44,37 @@ class ChatController extends Controller
         return Helper::errorProcessJson();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    //ajax request
+    public function getMessagePersonal(Request $request) {
+        if(Helper::checkProjectAccess($request->project_id, auth()->id())) {
+            $chatTo = Chat::where('project_id', $request->project_id)->where('user_to', $request->user_id)->where('user_from', auth()->id())->get();
+            $chatFrom = Chat::where('project_id', $request->project_id)->where('user_to', auth()->id())->where('user_from', $request->user_id)->get();
+
+            $chats = $chatTo->merge($chatFrom)->sortBy('created_at');
+            return view('layout.chat', compact('chats'));
+        }
+        
+        return Helper::errorProcessJson();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    //ajax request
+    public function sendMessagePersonal(Request $request) {
+        if(Helper::checkProjectAccess($request->project_id, auth()->id()) && $request->user_to != auth()->id()) {
+            $chat = new Chat;
+            $chat->project_id = $request->project_id;
+            $chat->user_from = auth()->id();
+            $chat->user_to = $request->user_to;
+            $chat->chat_message = $request->chat;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            if($chat->save()) {
+                $chat = $chat->where('id', $chat->id)->with('userFrom')->first();
+                $chat->date = $chat->getDate();
+                $chat->time = $chat->getTime();
+                broadcast(new ChatEvent($chat))->toOthers();
+                return $chat;
+            }
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return Helper::errorProcessJson();
     }
 }

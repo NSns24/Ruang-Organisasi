@@ -33,7 +33,7 @@
                     onClose: () => {
                         $.ajax({
                             method: 'POST',
-                            url: '{{ url('project/deleteInvitation') }}',
+                            url: '{{ url('project/delete_invitation') }}',
                             data: {
                                 invitation_id: respond.id,
                                 _token: '{{ csrf_token() }}'
@@ -113,7 +113,7 @@
                 onClose: () => {
                     $.ajax({
                         method: 'POST',
-                        url: '{{ url('project/deleteInvitation') }}',
+                        url: '{{ url('project/delete_invitation') }}',
                         data: {
                             invitation_id: respond.id,
                             _token: '{{ csrf_token() }}'

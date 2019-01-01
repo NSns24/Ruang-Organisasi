@@ -27,6 +27,9 @@ Route::group(['middleware' => 'login'], function() {
 	Route::post('project/delete_invitation', 'ProjectController@deleteInvitation');
 	Route::get('chat/{id}', 'ChatController@index');
 	Route::post('chat/send_message_group', 'ChatController@sendMessageGroup');
+	Route::post('chat/get_message_personal', 'ChatController@getMessagePersonal');
+	Route::post('chat/send_message_personal', 'ChatController@sendMessagePersonal');
+	Route::get('jobs/{id}', 'JobController@index');
 });
 
 Route::get('meeting', function() {
@@ -37,6 +40,4 @@ Route::get('calender', function() {
     return view('calender.index');
 });
 
-Route::get('/jobs', function() {
-    return view('jobs.index');
-});
+

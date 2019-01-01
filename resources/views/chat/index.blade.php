@@ -132,6 +132,10 @@
             font-size: 12px;
             margin-bottom: 8px;
         }
+
+        #friend-list {
+            margin-top: 30px;
+        }
     </style>
 @endsection
 
@@ -164,10 +168,10 @@
                 <div class="tabs-container">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link mbr-fonts-style active show display-7" role="tab" data-toggle="tab" href="#tabs4-2e_tab0" aria-selected="true">Group</a>
+                            <a class="nav-link mbr-fonts-style active show display-7" role="tab" data-toggle="tab" href="#tabs4-2e_tab0" aria-selected="true" id="group-tab">Group</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link mbr-fonts-style active show display-7" role="tab" data-toggle="tab" href="#tabs4-2e_tab1" aria-selected="true">Personal</a>
+                            <a class="nav-link mbr-fonts-style active show display-7" role="tab" data-toggle="tab" href="#tabs4-2e_tab1" aria-selected="true" id="personal-tab">Personal</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -177,43 +181,7 @@
                                     <div class="body">
                                         <div class="mesgs">
                                             <div class="msg_history">
-                                                @foreach($chats as $chat)
-                                                    @if($loop->index == 0 || $chats[$loop->index - 1]->getDate() != $chat->getDate())
-                                                        <span class="time_date date">
-                                                            {{ $chat->getDate() }}
-                                                        </span>
-                                                    @endif
-
-                                                    @if($chat->user_from == auth()->id())
-                                                        <div class="outgoing_msg">
-                                                            <div class="sent_msg">
-                                                                <p>
-                                                                    {{ $chat->chat_message }}
-                                                                </p>
-                                                                <span class="time_date">
-                                                                    {{ $chat->getTime() }}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    @else 
-                                                        <div class="incoming_msg">
-                                                            <div class="received_msg">
-                                                                <div class="received_withd_msg">
-                                                                    <span class="chat-from">
-                                                                        <img src="{{ asset('assets/image/user/'.$chat->userFrom->profile_picture) }}" class="rounded-circle" width="40">
-                                                                        {{ $chat->userFrom->name }}
-                                                                    </span>
-                                                                    <p>
-                                                                        {{ $chat->chat_message }}
-                                                                    </p>
-                                                                    <span class="time_date">
-                                                                        {{ $chat->getTime() }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
+                                                @include('layout.chat')
                                             </div>
                                         </div>
                                     </div>
@@ -233,13 +201,16 @@
                         </div>
                         <div id="tab2" class="tab-pane" role="tabpanel">
                             <div class="row">
-                                <div class="col-md-12" id="dropdown-friends">
+                                <div class="col-md-12" id="friend-list">
                                     <select class="form-control" id="select-friend">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
+                                        <option value="">Select Your Friend</option>
+                                        @if($project->user->id != auth()->id())
+                                            <option value="{{ $project->user->id }}">{{ $project->user->name }} ({{ $project->user->email }})</option>
+                                        @endif
+                                        
+                                        @foreach($friends as $friend)
+                                            <option value="{{ $friend->id }}">{{ $friend->name }} ({{ $friend->email }})</option>
+                                        @endforeach 
                                     </select>
                                 </div>
                             </div>
@@ -283,8 +254,23 @@
 
     <script>
         $(function(){
-            let latestDate = '{{ $chats->last()->getDate() }}';
+            let latestDate = '{{ ($chats->last()) ? $chats->last()->getDate() : "" }}';
+            let latestDatePersonal = '';
+            
             $('#user-msg-group').val('');
+            scrollGroupChat();
+
+            function scrollGroupChat() {
+                $('#chat-group .msg_history').animate({
+                    scrollTop: $('#chat-group .msg_history')[0].scrollHeight
+                }, 1000);
+            }
+
+            function scrollPersonalChat() {
+                $('#chat-personal .msg_history').animate({
+                    scrollTop: $('#chat-personal .msg_history')[0].scrollHeight
+                }, 1000);
+            }
 
             $('#btn-send-group').on('click', () => {
                 if($.trim($('#user-msg-group').val()) != '') {
@@ -297,9 +283,10 @@
                             chat: $.trim($('#user-msg-group').val())
                         },
                         success: (data) => { 
-                            if(data.date != latestDate) {
+                            if(latestDate == '' || data.date != latestDate) {
                                 $('#chat-group .msg_history').append('<span class="time_date date">' + data.date + '</span>'
                                 );
+                                latestDate = data.date;
                             }
 
                             $('#chat-group .msg_history').append('<div class="outgoing_msg">' + 
@@ -310,9 +297,7 @@
                                 '</div></div>'
                             );
 
-                            $('#chat-group .msg_history').animate({
-                                scrollTop: $('#chat-group .msg_history')[0].scrollHeight
-                            }, 1000);
+                            scrollGroupChat();
                         },
                         error: function(xhr) {
                             Swal({
@@ -326,19 +311,146 @@
                 }
             });
 
-            Echo.private('chat.{{ $project->id }}.group')
-            .listen('.chat', (data) => {
-                console.log(data);
+            $('#btn-send-personal').on('click', () => {
+                if($.trim($('#user-msg-personal').val()) != '' && $('#select-friend').val() != '') {
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{ url('chat/send_message_personal') }}',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            project_id: {{ $project->id }},
+                            chat: $.trim($('#user-msg-personal').val()),
+                            user_to: $('#select-friend').val()
+                        },
+                        success: (data) => { 
+                            if(latestDatePersonal == '' || data.date != latestDatePersonal) {
+                                $('#chat-personal .msg_history').append('<span class="time_date date">' + data.date + '</span>'
+                                );
+                                latestDatePersonal = data.date;
+                            }
+
+                            $('#chat-personal .msg_history').append('<div class="outgoing_msg">' + 
+                                '<div class="sent_msg">' +
+                                '<p>' + data.chat_message + '</p>' +
+                                '<span class="time_date">' + 
+                                data.time + '</span>' + 
+                                '</div></div>'
+                            );
+
+                            scrollPersonalChat();
+                        },
+                        error: function(xhr) {
+                            Swal({
+                                type: 'error',
+                                title: 'Error while processing data'
+                            });
+                        }
+                    }); 
+
+                    $('#user-msg-personal').val('');
+                }
             });
 
-            function newChat(chat) {
-                $('.msg_history').append('<div class="incoming_msg">' + 
+            $('#personal-tab').on('click', () => {
+                $('#select-friend').val('').trigger('change');
+            });
+
+            $('#group-tab').on('click', () => {
+                setTimeout(() => {
+                    scrollGroupChat();
+                }, 300);
+            });
+
+            $('#select-friend').on('change', () => {
+                if($('#select-friend').val() == '') {
+                    $('#chat-personal .msg_history').html('');
+                    $('#user-msg-personal').prop('disabled', true);
+                    $('#btn-send-personal').prop('disabled', true);
+                    $('#btn-send-personal').css('cursor', 'not-allowed');
+                }
+                else {
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{ url('chat/get_message_personal') }}',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            project_id: {{ $project->id }},
+                            user_id: $('#select-friend').val()
+                        },
+                        success: (data) => { 
+                            $('#chat-personal .msg_history').html(data);
+                            latestDatePersonal = $.trim($('#chat-personal .date').last().html());
+                        },
+                        error: function(xhr) {
+                            Swal({
+                                type: 'error',
+                                title: 'Error while processing data'
+                            });
+                        }
+                    });
+
+                    $('#user-msg-personal').prop('disabled', false);
+                    $('#btn-send-personal').prop('disabled', false);
+                    $('#btn-send-personal').css('cursor', 'pointer');
+                }
+
+                scrollPersonalChat();
+            });
+
+            Echo.private('chat.{{ $project->id }}.0')
+            .listen('.chat', (data) => {
+                newChatGroup(data.chat, data.date, data.time);
+            });
+
+            Echo.private('chat.{{ $project->id }}.{{ auth()->id() }}')
+            .listen('.chat', (data) => {
+                newChatPersonal(data.chat, data.date, data.time);
+            });
+
+            function newChatPersonal(chat, date, time) {
+                if(latestDatePersonal == '' || date != latestDatePersonal) {
+                    $('#chat-personal .msg_history').append('<span class="time_date date">' + date + '</span>'
+                    );
+                    latestDatePersonal = date;
+                }
+
+                let imageUrl = '{{ asset("assets/image/user") }}' + '/' + chat.user_from.profile_picture;
+
+                $('#chat-personal .msg_history').append('<div class="incoming_msg">' + 
                     '<div class="received_msg">' +
                     '<div class="received_withd_msg">' +
+                    '<span class="chat-from">' +
+                    '<img src="' + imageUrl + '" class="rounded-circle" width="40">' +
+                    chat.user_from.name + '</span>' +
                     '<p>' + chat.chat_message + '</p>' +
-                    '<span class="time_date">' +  + ' | ' +  + '</span>' + 
+                    '<span class="time_date">' + time + '</span>' + 
                     '</div></div></div>'
                 );
+
+                scrollPersonalChat();
+            }
+
+            function newChatGroup(chat, date, time) {
+                if(latestDate == '' || date != latestDate) {
+                    $('#chat-group .msg_history').append('<span class="time_date date">' + date + '</span>'
+                    );
+                    latestDate = date;
+                }
+
+                let imageUrl = '{{ asset("assets/image/user") }}' + '/' + chat.user_from.profile_picture;
+
+                $('#chat-group .msg_history').append('<div class="incoming_msg">' + 
+                    '<div class="received_msg">' +
+                    '<div class="received_withd_msg">' +
+                    '<span class="chat-from">' +
+                    '<img src="' + imageUrl + '" class="rounded-circle" width="40">' +
+                    chat.user_from.name + '</span>' +
+                    '<p>' + chat.chat_message + '</p>' +
+                    '<span class="time_date">' + time + '</span>' + 
+                    '</div></div></div>'
+                );
+
+                scrollGroupChat();
             }
         });
     </script>
