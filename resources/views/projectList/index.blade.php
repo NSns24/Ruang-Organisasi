@@ -5,15 +5,7 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/page/web/assets/mobirise-icons/mobirise-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/tether/tether.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap-grid.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap-reboot.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/theme/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/page/gallery/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/mobirise/css/mbr-additional.css') }}" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
 
     <style>
@@ -98,7 +90,7 @@
                                                 <h4 class="display-2">
                                                     {{ $project->project_name }}
                                                     -
-                                                    @if($project->user_id == session('currentUser')['id'])
+                                                    @if($project->user_id == auth()->id())
                                                         By You
                                                     @else 
                                                         By {{ $project->user->name }}
@@ -136,7 +128,7 @@
             </h2>
             <h3 class="mbr-section-subtitle align-center mbr-fonts-style display-5">
                 @if($projects->first() && $projects->first()->project_deadline > date('Y-m-d'))
-                    You still have one remaining project to be prepared.
+                    Your Closest Project Deadline
                 @else
                     No Undergoing Project
                 @endif
@@ -145,9 +137,15 @@
         <div class="container pt-5 mt-2">
             <div class=" countdown-cont align-center p-4">
                 <div class="event-name align-left mbr-white ">
-                    <h4 class="mbr-fonts-style display-5">EVENT NAME</h4>
+                    <h4 class="mbr-fonts-style display-5">
+                        @if($projects->first() && $projects->first()->project_deadline > date('Y-m-d'))
+                            {{ strtoupper($projects->first()->project_name) }} Project
+                        @else
+                            -
+                        @endif
+                    </h4>
                 </div>
-                <div class="countdown align-center py-2" data-due-date="{{ $projects->first() ?: "" }}"></div>
+                <div class="countdown align-center py-2" data-due-date="{{ ($projects->first()) ? $projects->first()->project_deadline : "" }}"></div>
                 <div class="daysCountdown" title="Days"></div>
                 <div class="hoursCountdown" title="Hours"></div>
                 <div class="minutesCountdown" title="Minutes"></div>
@@ -236,17 +234,11 @@
 @endsection
 
 @section('js')
-    {{-- <script src="{{ asset('assets/page/web/assets/jquery/jquery.min.js') }}"></script> --}}
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('assets/page/popper/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/page/tether/tether.min.js') }}"></script>
-    <script src="{{ asset('assets/page/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/page/smoothscroll/smooth-scroll.js') }}"></script>
     <script src="{{ asset('assets/page/parallax/jarallax.min.js') }}"></script>
     <script src="{{ asset('assets/page/masonry/masonry.pkgd.min.js') }}"></script>
     <script src="{{ asset('assets/page/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
     <script src="{{ asset('assets/page/countdown/jquery.countdown.min.js') }}"></script>
-    <script src="{{ asset('assets/page/vimeoplayer/jquery.mb.vimeo_player.js') }}"></script>
     <script src="{{ asset('assets/page/bootstrapcarouselswipe/bootstrap-carousel-swipe.js') }}"></script>
     <script src="{{ asset('assets/page/theme/js/script.js') }}"></script>
     <script src="{{ asset('assets/page/gallery/player.min.js') }}"></script>
@@ -254,7 +246,8 @@
     <script src="{{ asset('assets/page/slidervideo/script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+
+    @include('layout.socket')
 
     <script type="text/javascript">
         $(function() {
@@ -288,11 +281,6 @@
             $('div[data-target="#modal-new-project"]').on('click', () => {
                 $('#form-new-project').find('input[type!="hidden"]').val('');
                 $('#form-new-project').find('.alert').remove();
-            });
-
-            Echo.private('chat')
-            .listen('.Tes', (e) => {
-                console.log(e);
             });
         });
     </script>

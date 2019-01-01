@@ -9,22 +9,26 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use App\Invitation;
+use App\Chat;
 
-class AddMemberEvent implements ShouldBroadcast
+class ChatEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $invitation;
+    public $chat;
+    public $date;
+    public $time;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Invitation $invitation)
+    public function __construct(Chat $chat)
     {
-        $this->invitation = $invitation;
+        $this->chat = $chat;
+        $this->date = $this->chat->getDate();
+        $this->time = $this->chat->getTime();
     }
 
     /**
@@ -34,11 +38,11 @@ class AddMemberEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('new-member.'.$this->invitation->user_to);
+        return new PrivateChannel('chat.'.$this->chat->project_id.'.'.$this->chat->chatType());
     }
 
     public function broadcastAs()
     {
-        return 'add.member';
+        return 'chat';
     }
 }

@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use Illuminate\Http\Request;
 use Validator;
+use App\Project;
+use App\ProjectDetail;
 
 class Helper
 {
@@ -43,5 +45,33 @@ class Helper
 
     public static function errorProcessJson() {
         return response()->json(null, 404);
+    }
+
+    public static function checkProjectOwner($project_id, $user_id) {
+        $project = Project::where('user_id', $user_id)->where('id', $project_id)->count();
+
+        if($project == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public static function checkProjectAccess($project_id, $user_id) {
+        $ownProject = Project::where('user_id', $user_id)->where('id', $project_id)->count();
+
+        $otherProject = ProjectDetail::where('user_id', $user_id)->where('project_id', $project_id)->count();
+
+        if($ownProject == 0 && $otherProject == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public static function errorProjectAccess() {
+        return back()->with('error', 'Wrong Project');
     }
 }

@@ -10,14 +10,18 @@ class Invitation extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id', 'project_id', 'email',
+        'project_id', 'user_from', 'user_to', 'status',
     ];
 
-    public function user() {
-    	return $this->belongsTo(User::class);
+    public function userFrom() {
+    	return $this->belongsTo(User::class, 'user_from');
     }
 
     public function project() {
     	return $this->belongsTo(Project::class);
+    }
+
+    public function userTo() {
+        return $this->belongsTo(User::class, 'user_to');
     }
 }

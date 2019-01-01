@@ -5,16 +5,9 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/page/web/assets/mobirise-icons/mobirise-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/tether/tether.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap-grid.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap-reboot.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/page/socicon/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/page/dropdown/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/page/as-pie-progress/css/progress.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/theme/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/mobirise/css/mbr-additional.css') }}" type="text/css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.min.css">
 
     <style type="text/css">
@@ -34,54 +27,7 @@
 
 @section('main')
     <section class="menu cid-rcxBvFvNhY" once="menu" id="menu1-18">
-        <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm bg-color transparent">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            <div class="menu-logo">
-                <div class="navbar-brand">
-                    <span class="navbar-logo">
-                        <img src="{{ asset('assets/image/logo.png') }}" style="height: 4.5rem;">
-                    </span>
-                    <span class="navbar-caption-wrap">
-                        <a class="navbar-caption text-white display-5" href="{{ url('project/'.$project->id) }}">RuangOrganisasi</a>
-                    </span>
-                </div>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
-                    <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="#">
-                            <span class="mbri-laptop mbr-iconfont mbr-iconfont-btn"></span>
-                            Meeting
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="#">
-                            <span class="mbri-chat mbr-iconfont mbr-iconfont-btn"></span>
-                            Chat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="#">
-                            <span class="mbri-contact-form mbr-iconfont mbr-iconfont-btn"></span>
-                            Assign Jobs
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="{{ url('logout') }}">
-                            <span class="mbri-logout mbr-iconfont mbr-iconfont-btn"></span>
-                            Log Out
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        @include('layout.navbar')
     </section>
 
     <section class="mbr-section info3 cid-rcxBjNEEjS" id="info3-17">
@@ -99,10 +45,10 @@
                         @endif
                     </h3>
                     <p class="mbr-text align-left mbr-white mbr-fonts-style display-7">
-                        This project was created by {{ ($project->user_id == session('currentUser')['id']) ? 'YOU' : strtoupper($project->user->name) }}, and had deadline on {{ date('D, d M Y', strtotime($project->project_deadline)) }}
+                        This project was created by {{ ($project->user_id == auth()->id()) ? 'YOU' : strtoupper($project->user->name) }}, and had deadline on {{ date('D, d M Y', strtotime($project->project_deadline)) }}
                     </p>
                     <div class="mbr-section-btn align-left py-4">
-                        <a class="btn btn-primary display-4" href="{{ url('projectList') }}">Projects List</a>
+                        <a class="btn btn-primary display-4" href="{{ url('project') }}">Projects List</a>
                         <a class="btn btn-white-outline display-4" href="#">About US</a>
                     </div>
                 </div>
@@ -134,7 +80,7 @@
                             Works done
                         </h4>
 
-                        @if($project->user_id == session('currentUser')['id'])
+                        @if($project->user_id == auth()->id())
                             <p>Change Current Progress : <span id="slider-value"></span></p>
                             <input type="range" min="0" max="100" value="{{ $project->project_progress }}" id="slider">
                             <br>
@@ -155,7 +101,7 @@
             </h2>
 
             <div class="row media-row">
-                @if($project->user_id == session('currentUser')['id'])
+                @if($project->user_id == auth()->id())
                     <div class="team-item col-lg-3 col-md-6" data-target="#modal-new-member" data-toggle="modal" style="cursor: pointer;">
                         <div class="item-image">
                             <img src="{{ asset('assets/image/icon/add_team.png') }}">
@@ -176,7 +122,7 @@
                     <div class="item-caption py-3">
                         <div class="item-name px-2">
                             <p class="mbr-fonts-style display-5">
-                                {{ ($project->user_id == session('currentUser')['id']) ? 'YOU' : strtoupper($project->user->name) }} 
+                                {{ ($project->user_id == auth()->id()) ? 'YOU' : strtoupper($project->user->name) }} 
                             </p>
                         </div>
                         <div class="item-role px-2">
@@ -192,7 +138,7 @@
                         <div class="item-caption py-3">
                             <div class="item-name px-2">
                                 <p class="mbr-fonts-style display-5">
-                                    {{ ($team->user->id == session('currentUser')['id']) ? 'YOU' : strtoupper($team->user->name) }} 
+                                    {{ ($team->user->id == auth()->id()) ? 'YOU' : strtoupper($team->user->name) }} 
                                 </p>
                             </div>
                             <div class="item-role px-2">
@@ -218,6 +164,7 @@
 
                 <form action="{{ url('project/new_member') }}" method="POST" id="form-new-member">
                     @csrf
+                    <input type="hidden" name="project_id" value="{{ $project->id }}">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="email" name="email" class="form-control" placeholder="Email New Member" value="{{ old('email') }}">
@@ -241,53 +188,17 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/page/web/assets/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/page/popper/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/page/tether/tether.min.js') }}"></script>
-    <script src="{{ asset('assets/page/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/page/dropdown/js/script.min.js') }}"></script>
     <script src="{{ asset('assets/page/touchswipe/jquery.touch-swipe.min.js') }}"></script>
     <script src="{{ asset('assets/page/as-pie-progress/jquery-as-pie-progress.min.js') }}"></script>
     <script src="{{ asset('assets/page/smoothscroll/smooth-scroll.js') }}"></script>
     <script src="{{ asset('assets/page/theme/js/script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+
+    @include('layout.socket')
 
     <script type="text/javascript">
         $(function() {
-            function init() {
-                $('#slider').val('{{ $project->project_progress }}').change();
-                $('#slider-value').html('');
-
-                @if(session('updateProgress'))
-                    $('#progress-bars3-15')[0].scrollIntoView({
-                        behavior: 'instant', 
-                        block: 'center'
-                    });
-                @elseif($errors->any())
-                    $('#features16-13')[0].scrollIntoView({
-                        behavior: 'smooth', 
-                        block: 'end'
-                    });
-
-                    setTimeout(() => {
-                        $('#modal-new-member').modal({
-                            show: true
-                        });
-                    }, 1000);
-                @elseif(session('error'))
-                    Swal({
-                        type: 'error',
-                        title: '{{ session("error") }}'
-                    });
-                @elseif(session('success')) 
-                    Swal({
-                        type: 'success',
-                        title: '{{ session("success") }}'
-                    });
-                @endif
-            }
-
             $('#slider').rangeslider({
                 polyfill : false,
                 onSlide: (position, value) => {
@@ -295,7 +206,35 @@
                 }
             });
 
-            init();
+            $('#slider').val('{{ $project->project_progress }}').change();
+            
+            @if(session('updateProgress'))
+                $('#progress-bars3-15')[0].scrollIntoView({
+                    behavior: 'instant', 
+                    block: 'center'
+                });
+            @elseif($errors->any())
+                $('#features16-13')[0].scrollIntoView({
+                    behavior: 'smooth', 
+                    block: 'end'
+                });
+
+                setTimeout(() => {
+                    $('#modal-new-member').modal({
+                        show: true
+                    });
+                }, 1000);
+            @elseif(session('error'))
+                Swal({
+                    type: 'error',
+                    title: '{{ session("error") }}'
+                });
+            @elseif(session('success')) 
+                Swal({
+                    type: 'success',
+                    title: '{{ session("success") }}'
+                });
+            @endif
 
             $('#btn-slider-update').on('click', () => {
                 $.ajax({

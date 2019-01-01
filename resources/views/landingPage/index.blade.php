@@ -5,14 +5,7 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/page/web/assets/mobirise-icons/mobirise-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/tether/tether.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap-grid.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/bootstrap/css/bootstrap-reboot.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/page/dropdown/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/theme/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/page/mobirise/css/mbr-additional.css') }}" type="text/css">
 
     <style>
         #btn-register:hover {
@@ -27,7 +20,7 @@
             <div class="menu-logo">
                 <div class="navbar-brand">
                     <span class="navbar-logo">
-                        <img src="{{ asset('assets/image/logo.png') }}" style="height: 4.5rem;">  
+                        <img src="{{ asset('assets/image/icon/logo.png') }}" style="height: 4.5rem;">  
                     </span>
                     <span class="navbar-caption-wrap"><span class="navbar-caption text-primary display-5">RuangOrganisasi</span></span>
                 </div>
@@ -235,18 +228,13 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/page/web/assets/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/page/popper/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/page/tether/tether.min.js') }}"></script>
-    <script src="{{ asset('assets/page/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/page/dropdown/js/script.min.js') }}"></script>
     <script src="{{ asset('assets/page/touchswipe/jquery.touch-swipe.min.js') }}"></script>
     <script src="{{ asset('assets/page/ytplayer/jquery.mb.ytplayer.min.js') }}"></script>
     <script src="{{ asset('assets/page/vimeoplayer/jquery.mb.vimeo_player.js') }}"></script>
     <script src="{{ asset('assets/page/smoothscroll/smooth-scroll.js') }}"></script>
     <script src="{{ asset('assets/page/theme/js/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
-
+    
     <script type="text/javascript">
         $(function() {
             @if($errors->hasBag('login') || session('errorLogin'))

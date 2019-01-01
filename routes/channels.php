@@ -11,14 +11,19 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('new-member.{id}', function($user, $id) {
+    return (int)$user->id === (int)$id;
 });
 
-Broadcast::channel('chat', function () {
-    return true;
+Broadcast::channel('invitation-respond.{id}', function($user, $id) {
+    return (int)$user->id === (int)$id;
 });
 
-// Broadcast::channel('new-member.{}', function ($user, ) {
-//     return true;
-// });
+Broadcast::channel('chat.{project_id}.{chat_type}', function($user, $project_id, $chat_type) {
+	if(is_numeric($chat_type)) {
+		return (int)$user->id === (int)$chat_type;
+	}
+	else {
+		return true;
+	}
+});

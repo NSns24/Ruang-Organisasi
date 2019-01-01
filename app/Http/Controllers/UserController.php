@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
             return back()->withErrors($validator, 'register')->withInput();
         }
 
-        $request['password'] = hash()->make($request->password);
+        $request['password'] = Hash::make($request->password);
 
         $user = User::create($request->all());
 
@@ -35,6 +36,7 @@ class UserController extends Controller
             $user->profile_picture = $filename;
             
             if($user->save()) {
+                auth()->login($user);
                 return back()->with('success', 'Register Success');
             }
         }

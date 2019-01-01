@@ -9,21 +9,22 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Invitation;
 
-class WebSocketEvent implements ShouldBroadcast
+class InvitationRespondEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
+    public $invitation;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct(Invitation $invitation)
     {
-        $this->data = $data;
+        $this->invitation = $invitation;
     }
 
     /**
@@ -33,11 +34,11 @@ class WebSocketEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat');
+        return new PrivateChannel('invitation-respond.'.$this->invitation->user_from);
     }
 
-
-    public function broadcastAs() {
-        return 'Tes';
+    public function broadcastAs()
+    {
+        return 'invitation.respond';
     }
 }

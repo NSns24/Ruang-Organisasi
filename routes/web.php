@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function() {
     return view('landingPage.index');
 });
 
@@ -19,25 +19,24 @@ Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 Route::resource('user', 'UserController');
 
-Route::group(['middleware' => ['login']], function() {
-    Route::resource('project', 'ProjectController');
+Route::group(['middleware' => 'login'], function() {
+	Route::resource('project', 'ProjectController');
+	Route::post('project/update_progress', 'ProjectController@updateProgress');
+	Route::post('project/new_member', 'ProjectController@newMember');
+	Route::post('project/invitation', 'ProjectController@invitation');
+	Route::post('project/delete_invitation', 'ProjectController@deleteInvitation');
+	Route::get('chat/{id}', 'ChatController@index');
+	Route::post('chat/send_message_group', 'ChatController@sendMessageGroup');
 });
 
-Route::post('project/update_progress', 'ProjectController@updateProgress');
-Route::post('project/new_member', 'ProjectController@newMember');
-
-Route::get('chat', function () {
-    return view('chat.index');
-});
-
-Route::get('meeting', function () {
+Route::get('meeting', function() {
     return view('meeting.index');
 });
 
-Route::get('calender', function () {
+Route::get('calender', function() {
     return view('calender.index');
 });
 
-Route::get('/jobs', function () {
+Route::get('/jobs', function() {
     return view('jobs.index');
 });
