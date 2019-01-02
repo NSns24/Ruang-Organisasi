@@ -151,40 +151,42 @@
         </div>
     </section>
 
-    <!-- Modal New Member -->
-    <div class="modal fade" id="modal-new-member" tabindex="-1" role="dialog" aria-labelledby="modalNewMember" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">New Member</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
+    @if($project->user_id == auth()->id())
+        <!-- Modal New Member -->
+        <div class="modal fade" id="modal-new-member" tabindex="-1" role="dialog" aria-labelledby="modalNewMember" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Member</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
 
-                <form action="{{ url('project/new_member') }}" method="POST" id="form-new-member">
-                    @csrf
-                    <input type="hidden" name="project_id" value="{{ $project->id }}">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="email" name="email" class="form-control" placeholder="Email New Member" value="{{ old('email') }}">
+                    <form action="{{ url('project/new_member') }}" method="POST" id="form-new-member">
+                        @csrf
+                        <input type="hidden" name="project_id" value="{{ $project->id }}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control" placeholder="Email New Member" value="{{ old('email') }}">
+                            </div>
+
+                            @if($errors->any())
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $errors->first() }}
+                                </div>
+                            @endif
                         </div>
 
-                        @if($errors->any())
-                            <div class="alert alert-danger" role="alert">
-                                {{ $errors->first() }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-primary">Send Invitation</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-sm btn-primary">Send Invitation</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 
 @section('js')

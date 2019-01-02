@@ -21,7 +21,7 @@
             <div class="received_msg">
                 <div class="received_withd_msg">
                     <span class="chat-from">
-                        <img src="{{ asset('assets/image/user/'.$chat->userFrom->profile_picture) }}" class="rounded-circle" width="40">
+                        <img src="{{ asset('assets/image/user/'.$chat->userFrom->profile_picture) }}" width="40">
                         {{ $chat->userFrom->name }}
                     </span>
                     <p>

@@ -420,7 +420,7 @@
                     '<div class="received_msg">' +
                     '<div class="received_withd_msg">' +
                     '<span class="chat-from">' +
-                    '<img src="' + imageUrl + '" class="rounded-circle" width="40">' +
+                    '<img src="' + imageUrl + '" width="40">' +
                     chat.user_from.name + '</span>' +
                     '<p>' + chat.chat_message + '</p>' +
                     '<span class="time_date">' + time + '</span>' + 
@@ -443,7 +443,7 @@
                     '<div class="received_msg">' +
                     '<div class="received_withd_msg">' +
                     '<span class="chat-from">' +
-                    '<img src="' + imageUrl + '" class="rounded-circle" width="40">' +
+                    '<img src="' + imageUrl + '" width="40">' +
                     chat.user_from.name + '</span>' +
                     '<p>' + chat.chat_message + '</p>' +
                     '<span class="time_date">' + time + '</span>' + 

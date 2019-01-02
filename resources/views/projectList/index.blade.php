@@ -178,7 +178,7 @@
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="name">Project Name <span class="required">*</span></label>
+                                <label for="project-name">Project Name <span class="required">*</span></label>
                                 <input type="text" name="project_name" class="form-control" placeholder="Project Name" value="{{ old('project_name') }}">
                             </div>
 
@@ -189,7 +189,7 @@
                             @endif
 
                             <div class="form-group">
-                                <label for="name">Project Deadline <span class="required">*</span></label>
+                                <label for="project-deadline">Project Deadline <span class="required">*</span></label>
                                 <input type="text" name="project_deadline" id="project-deadline" class="form-control" placeholder="Deadline" value="{{ old('project_deadline') }}" readonly>
                             </div>
 
@@ -200,12 +200,12 @@
                             @endif
 
                             <div class="form-group">
-                                <label for="Description">Project Description</label>
+                                <label for="project-description">Project Description</label>
                                 <textarea class="form-control" name="project_description" rows="3" placeholder="Description">{{ old('project_description') }}</textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="Project Image"><b>Project Image</b> <span class="required">*</span></label>
+                                <label for="project-image"><b>Project Image</b> <span class="required">*</span></label>
                                 <input type="file" name="project_image">
                             </div>
 
@@ -244,7 +244,7 @@
     <script src="{{ asset('assets/page/gallery/player.min.js') }}"></script>
     <script src="{{ asset('assets/page/gallery/script.js') }}"></script>
     <script src="{{ asset('assets/page/slidervideo/script.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
     <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
 
     @include('layout.socket')

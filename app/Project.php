@@ -12,10 +12,10 @@ class Project extends Model
     ];
 
     public function projectDetails() {
-    	return $this->hasMany(ProjectDetail::class);
+    	return $this->hasMany(ProjectDetail::class, 'project_id');
     }
 
     public function user() {
-    	return $this->belongsTo(User::class);
+    	return $this->belongsTo(User::class, 'user_id');
     }
 }

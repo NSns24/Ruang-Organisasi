@@ -30,6 +30,8 @@ Route::group(['middleware' => 'login'], function() {
 	Route::post('chat/get_message_personal', 'ChatController@getMessagePersonal');
 	Route::post('chat/send_message_personal', 'ChatController@sendMessagePersonal');
 	Route::get('jobs/{id}', 'JobController@index');
+	Route::post('jobs/store', 'JobController@store');
+	Route::post('jobs/change_schedule', 'JobController@changeSchedule');
 });
 
 Route::get('meeting', function() {

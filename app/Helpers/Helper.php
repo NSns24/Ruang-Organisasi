@@ -30,7 +30,20 @@ class Helper
         'project_deadline.date_format' => 'Project Deadline has wrong date format',
         'project_deadline.after' => 'Project Deadline must be greater than today',
         'project_image.required' => 'Project Image must be uploaded',
-        'project_image.image' => 'Project Image must be an image'
+        'project_image.image' => 'Project Image must be an image',
+
+        'job_description.required' => 'Job Description must be filled',
+        'job_start.required' => 'Job Start must be filled',
+        'job_start.date' => 'Job Start must be in date format',
+        'job_start.date_format' => 'Job Start has wrong date format',
+        'job_start.after_or_equal' => 'Job Start must be greater than or equal to today',
+        'job_start.before' => 'Job Start must be before project deadline',
+        'job_end.required' => 'Job End must be filled',
+        'job_end.date' => 'Job End must be in date format',
+        'job_end.date_format' => 'Job End has wrong date format',
+        'job_end.after_or_equal' => 'Job End must be greater than or equal to Job Start',
+        'job_end.before' => 'Job End must be before project deadline',
+        'assign_to.required' => 'Assign To must be choosed',
     ];
     
     public static function validate(Request $request, Array $rules) {
