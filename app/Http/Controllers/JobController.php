@@ -30,8 +30,8 @@ class JobController extends Controller
                     'start' => $job->job_start,
                     'end' => $job->job_end,
                     'description' => 'Assigned to '.$job->user->name,
-                    'data-job' => $job->id,
-                    'data-user' => $job->user_id
+                    'job' => $job->id,
+                    'user' => $job->user_id
                 ];
 
                 $events->push($temp);
@@ -85,13 +85,30 @@ class JobController extends Controller
         return Helper::errorProcess();
     }
 
+    //ajax request
     public function changeSchedule(Request $request) {
         if(!Helper::checkProjectOwner($request->project_id, auth()->id())) {
-            return Helper::errorProjectAccess();
+            return Helper::errorProcessJson();
         }
-        else if(Helper::checkProjectAccess($request->project_id, $request->assign_to)) {
+        else if(Helper::checkProjectAccess($request->project_id, $request->user_id)) {
+            $job = Job::findOrFail($request->job_id);
+            $job->job_start = $request->job_start;
+            $job->job_end = $request->job_end;
 
+            if($job->save()) {
+                return response()->json(null, 200);
+            }
         }
 
+        return Helper::errorProcessJson();
+    }
+
+    //ajax request
+    public function deleteJob(Request $request) {
+        if(!Helper::checkProjectOwner($request->project_id, auth()->id())) {
+            return Helper::errorProcessJson();
+        }
+        
+        Job::destroy($request->job_id);
     }
 }

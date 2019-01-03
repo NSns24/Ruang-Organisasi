@@ -45,11 +45,13 @@
                         @endif
                     </h3>
                     <p class="mbr-text align-left mbr-white mbr-fonts-style display-7">
-                        This project was created by {{ ($project->user_id == auth()->id()) ? 'YOU' : strtoupper($project->user->name) }}, and had deadline on {{ date('D, d M Y', strtotime($project->project_deadline)) }}
+                        This project was created by {{ ($project->user_id == auth()->id()) ? 'YOU' : strtoupper($project->user->name) }}, and had deadline on {{ $project->getDate() }}
                     </p>
                     <div class="mbr-section-btn align-left py-4">
                         <a class="btn btn-primary display-4" href="{{ url('project') }}">Projects List</a>
-                        <a class="btn btn-white-outline display-4" href="#">About US</a>
+                        @if($project->user_id == auth()->id())
+                            <a class="btn btn-white-outline display-4" href="{{ url('project/delete_project/'.$project->id) }}">Delete Project</a>
+                        @endif
                     </div>
                 </div>
             </div>

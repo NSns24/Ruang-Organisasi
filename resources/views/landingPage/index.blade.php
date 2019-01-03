@@ -88,6 +88,9 @@
                     </div>
                 </div>
             </div>
+            <div class="text-center">
+                <a class="btn btn-md btn-info display-4" href="#">About US</a>
+            </div>
         </div>
     </section>
     

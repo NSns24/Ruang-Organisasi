@@ -249,12 +249,13 @@
     <script src="{{ asset('assets/page/mbr-tabs/mbr-tabs.js') }}"></script>
     <script src="{{ asset('assets/page/smoothscroll/smooth-scroll.js') }}"></script>
     <script src="{{ asset('assets/page/theme/js/script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
 
     @include('layout.socket')
 
     <script>
         $(function(){
-            let latestDate = '{{ ($chats->last()) ? $chats->last()->getDate() : "" }}';
+            let latestDate = moment('{{ ($chats->last()) ? $chats->last()->getDate() : "" }}');
             let latestDatePersonal = '';
             
             $('#user-msg-group').val('');
@@ -272,21 +273,33 @@
                 }, 1000);
             }
 
+            $('#user-msg-group').on('keyup', (e) => {
+                if(e.keyCode == 13) {
+                    $('#btn-send-group').trigger('click');
+                }
+            });
+
+            $('#user-msg-personal').on('keyup', (e) => {
+                if(e.keyCode == 13) {
+                    $('#btn-send-personal').trigger('click');
+                }
+            });
+
             $('#btn-send-group').on('click', () => {
                 if($.trim($('#user-msg-group').val()) != '') {
                     $.ajax({
                         method: 'POST',
-                        url: '{{ url('chat/send_message_group') }}',
+                        url: '{{ url("chat/send_message_group") }}',
                         data: {
                             _token: '{{ csrf_token() }}',
                             project_id: {{ $project->id }},
                             chat: $.trim($('#user-msg-group').val())
                         },
                         success: (data) => { 
-                            if(latestDate == '' || data.date != latestDate) {
+                            if(latestDate == '' || moment(data.date).diff(latestDate, 'days') != 0) {
                                 $('#chat-group .msg_history').append('<span class="time_date date">' + data.date + '</span>'
                                 );
-                                latestDate = data.date;
+                                latestDate = moment(data.date);
                             }
 
                             $('#chat-group .msg_history').append('<div class="outgoing_msg">' + 
@@ -315,7 +328,7 @@
                 if($.trim($('#user-msg-personal').val()) != '' && $('#select-friend').val() != '') {
                     $.ajax({
                         method: 'POST',
-                        url: '{{ url('chat/send_message_personal') }}',
+                        url: '{{ url("chat/send_message_personal") }}',
                         data: {
                             _token: '{{ csrf_token() }}',
                             project_id: {{ $project->id }},
@@ -323,10 +336,10 @@
                             user_to: $('#select-friend').val()
                         },
                         success: (data) => { 
-                            if(latestDatePersonal == '' || data.date != latestDatePersonal) {
+                            if(latestDatePersonal == '' || moment(data.date).diff(latestDatePersonal, 'days') != 0) {
                                 $('#chat-personal .msg_history').append('<span class="time_date date">' + data.date + '</span>'
                                 );
-                                latestDatePersonal = data.date;
+                                latestDatePersonal = moment(data.date);
                             }
 
                             $('#chat-personal .msg_history').append('<div class="outgoing_msg">' + 
@@ -371,7 +384,7 @@
                 else {
                     $.ajax({
                         method: 'POST',
-                        url: '{{ url('chat/get_message_personal') }}',
+                        url: '{{ url("chat/get_message_personal") }}',
                         data: {
                             _token: '{{ csrf_token() }}',
                             project_id: {{ $project->id }},
@@ -379,7 +392,7 @@
                         },
                         success: (data) => { 
                             $('#chat-personal .msg_history').html(data);
-                            latestDatePersonal = $.trim($('#chat-personal .date').last().html());
+                            latestDatePersonal = moment($('#chat-personal .date').last().html());
                         },
                         error: function(xhr) {
                             Swal({
@@ -408,10 +421,10 @@
             });
 
             function newChatPersonal(chat, date, time) {
-                if(latestDatePersonal == '' || date != latestDatePersonal) {
+                if(latestDatePersonal == '' || moment(date).diff(latestDatePersonal, 'days') != 0) {
                     $('#chat-personal .msg_history').append('<span class="time_date date">' + date + '</span>'
                     );
-                    latestDatePersonal = date;
+                    latestDatePersonal = moment(date);
                 }
 
                 let imageUrl = '{{ asset("assets/image/user") }}' + '/' + chat.user_from.profile_picture;
@@ -431,10 +444,10 @@
             }
 
             function newChatGroup(chat, date, time) {
-                if(latestDate == '' || date != latestDate) {
+                if(latestDate == '' || moment(date).diff(latestDate, 'days') != 0) {
                     $('#chat-group .msg_history').append('<span class="time_date date">' + date + '</span>'
                     );
-                    latestDate = date;
+                    latestDate = moment(date);
                 }
 
                 let imageUrl = '{{ asset("assets/image/user") }}' + '/' + chat.user_from.profile_picture;

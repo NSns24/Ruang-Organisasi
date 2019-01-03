@@ -34,13 +34,14 @@
     <section class="mbr-section content5 cid-rcxG03AaCJ mbr-parallax-background" id="content5-1z">
         <div class="container">
             <div class="media-container-row">
-                <div class="title col-12 col-md-8">
+                <div class="title col-12 col-md-8 text-center">
                     <h2 class="align-center mbr-bold mbr-white pb-3 mbr-fonts-style display-1">
                         YOUR PROJECTS LIST
                     </h2>
                     <h3 class="mbr-section-subtitle align-center mbr-light mbr-white pb-3 mbr-fonts-style display-5">
                         "If you don't know where you are going. How can you expect to get there?" ~ Basil S. Walsh 
                     </h3>
+                    <a class="btn btn-info display-4 text-center" href="{{ url('logout') }}">Logout</a>
                 </div>
             </div>
         </div>
@@ -153,7 +154,7 @@
                 <div class="event-date align-left mbr-white">
                     <h5 class="mbr-fonts-style display-7">
                         @if($projects->first() && $projects->first()->project_deadline > date('Y-m-d'))
-                            {{ date('D, d M Y', strtotime($projects->first()->project_deadline)) }} -
+                            {{ $projects->first()->getDate() }} -
                         @endif
                         NS
                     </h5>

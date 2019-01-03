@@ -20,7 +20,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
             <li class="nav-item">
-                <a class="nav-link link text-white display-4" href="#">
+                <a class="nav-link link text-white display-4" href="{{ url('meeting') }}">
                     <span class="mbri-laptop mbr-iconfont mbr-iconfont-btn"></span>
                     Meeting
                 </a>

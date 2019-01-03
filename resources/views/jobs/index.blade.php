@@ -217,16 +217,53 @@
                             data: {
                                 _token: '{{ csrf_token() }}',
                                 project_id: {{ $project->id }},
-                                user_id: event.data-user,
-                                job_id: event.data-job,
+                                user_id: event.user,
+                                job_id: event.job,
                                 job_start: event.start.format(),
-                                job_end: event.end.format()
+                                job_end: (event.end != null) ? event.end.format() : event.start.format()
                             },
                             error: (xhr) => {
                                 revertFunc();
                             }
                         });
                     }
+                },
+                eventClick: (event) => {
+                    Swal({
+                        title: 'Do you want to delete this event ?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.value) {
+                            $.ajax({
+                                method: 'POST',
+                                url: '{{ url("jobs/delete_job") }}',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    project_id: {{ $project->id }},
+                                    job_id: event.job
+                                },
+                                success: () => {
+                                    Swal({
+                                        type: 'success',
+                                        title: 'Success Delete'
+                                    });
+
+                                    $('#calendar').fullCalendar('removeEvents', event._id);
+                                },
+                                error: (xhr) => {
+                                    Swal({
+                                        type: 'error',
+                                        title: 'Error while processing data'
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
             });
 

@@ -17,7 +17,7 @@ class ProjectController extends Controller
     {
         $ownProjects = Project::where('user_id', auth()->id())->get();
 
-        $otherProjects = ProjectDetail::where('project_details.user_id', auth()->id())->join('projects', 'projects.id', '=', 'project_details.project_id')->select('projects.*')->get();
+        $otherProjects = Project::where('project_details.user_id', auth()->id())->join('project_details', 'projects.id', '=', 'project_details.project_id')->select('projects.*')->get();
 
         $projects = $ownProjects->merge($otherProjects)->sort(function($a, $b) {
             if($a->project_deadline <= date('Y-m-d')) {
@@ -180,6 +180,16 @@ class ProjectController extends Controller
     //ajax request
     public function deleteInvitation(Request $request) {
         Invitation::destroy($request->invitation_id);
+    }
+
+    public function deleteProject($id) {
+        if(!Helper::checkProjectOwner($id, auth()->id())) {
+            return Helper::errorProjectAccess();
+        }
+
+        Project::destroy($id);
+
+        return redirect('project')->with('success', 'Delete Project Success'); 
     }
 
     /**

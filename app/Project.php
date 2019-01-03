@@ -18,4 +18,8 @@ class Project extends Model
     public function user() {
     	return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getDate() {
+    	return date('D, d M Y', strtotime($this->project_deadline));
+    }
 }
