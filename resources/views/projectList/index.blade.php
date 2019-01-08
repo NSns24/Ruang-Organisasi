@@ -282,6 +282,7 @@
             $('div[data-target="#modal-new-project"]').on('click', () => {
                 $('#form-new-project').find('input[type!="hidden"]').val('');
                 $('#form-new-project').find('.alert').remove();
+                $('#form-new-project').find('textarea').val('');
             });
         });
     </script>

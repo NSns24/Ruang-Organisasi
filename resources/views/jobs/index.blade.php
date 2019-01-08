@@ -195,6 +195,7 @@
                     right: 'month,basicWeek'
                 },
                 eventLimit: true,
+                displayEventTime: false,
                 events: @json($events),
                 eventRender: (eventObj, $el) => {
                     $el.popover({
@@ -205,65 +206,69 @@
                         container: 'body'
                     });
                 },
-                editable: true,
+                editable: {{ ($project->user_id == auth()->id()) ? 'true' : 'false' }},
                 eventDrop: (event, delta, revertFunc) => {
-                    if(moment(event.start.format()) > projectDate || moment(event.start.format()) < moment().startOf('d')) {
-                        revertFunc();
-                    }
-                    else {
-                        $.ajax({
-                            method: 'POST',
-                            url: '{{ url("jobs/change_schedule") }}',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                project_id: {{ $project->id }},
-                                user_id: event.user,
-                                job_id: event.job,
-                                job_start: event.start.format(),
-                                job_end: (event.end != null) ? event.end.format() : event.start.format()
-                            },
-                            error: (xhr) => {
-                                revertFunc();
-                            }
-                        });
-                    }
-                },
-                eventClick: (event) => {
-                    Swal({
-                        title: 'Do you want to delete this event ?',
-                        text: "You won't be able to revert this!",
-                        type: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.value) {
+                    @if($project->user_id == auth()->id())
+                        if(moment(event.start.format()) > projectDate || moment(event.start.format()) < moment().startOf('d')) {
+                            revertFunc();
+                        }
+                        else {
                             $.ajax({
                                 method: 'POST',
-                                url: '{{ url("jobs/delete_job") }}',
+                                url: '{{ url("jobs/change_schedule") }}',
                                 data: {
                                     _token: '{{ csrf_token() }}',
                                     project_id: {{ $project->id }},
-                                    job_id: event.job
-                                },
-                                success: () => {
-                                    Swal({
-                                        type: 'success',
-                                        title: 'Success Delete'
-                                    });
-
-                                    $('#calendar').fullCalendar('removeEvents', event._id);
+                                    user_id: event.user,
+                                    job_id: event.job,
+                                    job_start: event.start.format(),
+                                    job_end: (event.end != null) ? event.end.format() : event.start.format()
                                 },
                                 error: (xhr) => {
-                                    Swal({
-                                        type: 'error',
-                                        title: 'Error while processing data'
-                                    });
+                                    revertFunc();
                                 }
                             });
                         }
-                    });
+                    @endif
+                },
+                eventClick: (event) => {
+                    @if($project->user_id == auth()->id())
+                        Swal({
+                            title: 'Do you want to delete this event ?',
+                            text: "You won't be able to revert this!",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                            if (result.value) {
+                                $.ajax({
+                                    method: 'POST',
+                                    url: '{{ url("jobs/delete_job") }}',
+                                    data: {
+                                        _token: '{{ csrf_token() }}',
+                                        project_id: {{ $project->id }},
+                                        job_id: event.job
+                                    },
+                                    success: () => {
+                                        Swal({
+                                            type: 'success',
+                                            title: 'Success Delete'
+                                        });
+
+                                        $('#calendar').fullCalendar('removeEvents', event._id);
+                                    },
+                                    error: (xhr) => {
+                                        Swal({
+                                            type: 'error',
+                                            title: 'Error while processing data'
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    @endif
                 }
             });
 

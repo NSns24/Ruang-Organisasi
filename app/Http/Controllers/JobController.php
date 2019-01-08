@@ -29,7 +29,7 @@ class JobController extends Controller
                 $temp = [
                     'title' => $job->job_description,
                     'start' => $job->job_start,
-                    'end' => $job->job_end,
+                    'end' => $job->job_end.'T23:59:00', //agar enddate tidak kurang 1 hari
                     'description' => 'Assigned to '.$job->user->name,
                     'job' => $job->id,
                     'user' => $job->user_id
