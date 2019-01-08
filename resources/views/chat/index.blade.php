@@ -9,7 +9,7 @@
 
     <style type="text/css">
         #content5-2d {
-            background-image: url('{{ asset("assets/image/background/projectList_header.jpg") }}');
+            background-image: url('{{ asset("assets/image/background/chat_header.jpg") }}');
         }
 
         .chat-panel {
@@ -312,7 +312,7 @@
 
                             scrollGroupChat();
                         },
-                        error: function(xhr) {
+                        error: (xhr) => {
                             Swal({
                                 type: 'error',
                                 title: 'Error while processing data'
@@ -352,7 +352,7 @@
 
                             scrollPersonalChat();
                         },
-                        error: function(xhr) {
+                        error: (xhr) => {
                             Swal({
                                 type: 'error',
                                 title: 'Error while processing data'
@@ -394,7 +394,7 @@
                             $('#chat-personal .msg_history').html(data);
                             latestDatePersonal = moment($('#chat-personal .date').last().html());
                         },
-                        error: function(xhr) {
+                        error: (xhr) => {
                             Swal({
                                 type: 'error',
                                 title: 'Error while processing data'

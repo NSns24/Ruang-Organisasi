@@ -86,7 +86,8 @@ class ProjectController extends Controller
     }
 
     //ajax request
-    public function updateProgress(Request $request) {
+    public function updateProgress(Request $request) 
+    {
         $project = Project::findOrFail($request->project_id);
 
         if(!Helper::checkProjectOwner($request->project_id, auth()->id())) {
@@ -104,7 +105,8 @@ class ProjectController extends Controller
         return Helper::errorProcessJson();
     }
 
-    public function newMember(Request $request) {
+    public function newMember(Request $request) 
+    {
         if(!Helper::checkProjectOwner($request->project_id, auth()->id())) {
             return Helper::errorProjectAccess();
         }
@@ -148,7 +150,8 @@ class ProjectController extends Controller
     }
 
     //ajax request
-    public function invitation(Request $request) {
+    public function invitation(Request $request) 
+    {
         if($request->choose == 1) {
             $projectDetail = new ProjectDetail;
             $projectDetail->project_id = $request->project_id;
@@ -178,11 +181,13 @@ class ProjectController extends Controller
     }
 
     //ajax request
-    public function deleteInvitation(Request $request) {
+    public function deleteInvitation(Request $request) 
+    {
         Invitation::destroy($request->invitation_id);
     }
 
-    public function deleteProject($id) {
+    public function deleteProject($id) 
+    {
         if(!Helper::checkProjectOwner($id, auth()->id())) {
             return Helper::errorProjectAccess();
         }
@@ -190,39 +195,5 @@ class ProjectController extends Controller
         Project::destroy($id);
 
         return redirect('project')->with('success', 'Delete Project Success'); 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

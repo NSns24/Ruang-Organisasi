@@ -8,7 +8,8 @@ use App\Helpers\Helper;
 
 class LoginController extends Controller
 {
-    public function login(Request $request) {
+    public function login(Request $request) 
+    {
         $rules = [
             'email' => 'required|email',
             'password' => 'required'
@@ -30,7 +31,8 @@ class LoginController extends Controller
         }
     }
 
-    public function logout() {
+    public function logout() 
+    {
         session()->flush();
         auth()->logout();
         return redirect('/');

@@ -13,7 +13,7 @@
                 <img src="{{ asset('assets/image/icon/logo.png') }}" style="height: 4.5rem;">
             </span>
             <span class="navbar-caption-wrap">
-                <a class="navbar-caption text-white display-5" href="{{ url('project/'.$project->id) }}">RuangOrganisasi</a>
+                <a class="navbar-caption text-white display-5" href="{{ url('project/'.$project->id) }}">RuangMeeting</a>
             </span>
         </div>
     </div>

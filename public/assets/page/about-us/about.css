@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister');
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans+SC');
+@import url('https://fonts.googleapis.com/css?family=Allerta+Stencil|Annie+Use+Your+Telescope|Khand|Open+Sans+Condensed:300|Ubuntu+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Exo+2');
+@import url('https://fonts.googleapis.com/css?family=Dosis:300|Marvel');
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  overflow-x:hidden;
+  font-family: "Open Sans", sans-serif;
+  color: #3e454c;
+  background-color: #ffffff;
+}
+body::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+
+input {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.6rem;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent; 
+    border-radius: 50px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(183,177,177,0.8); 
+    border-top-right-radius:0;
+     border-radius: 50px;
+    border-bottom-right-radius:0;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+.title{
+  width: 100%;
+  height: 30vh;
+  position: relative;
+  margin-top: 270px;
+}
+
+.title h1{
+  font-size: 90px;
+  font-family: 'Dosis', sans-serif;
+  float: right;
+}
+
+.web-about{
+  height: 80vh;
+  width: 100%;
+  display: block;
+  text-transform: uppercase;
+}
+.web-title{
+  width: 25%;
+  height: 60vh;
+  float: left;
+  padding-top: 450px;
+  color: red;
+  text-align: right;
+  font-size: 50px;
+  margin-right: 25px;
+  font-family: 'Dosis', sans-serif;
+  height: 50px;
+}
+#line1{
+  margin: 0 20px;
+  width: 70px;
+}
+
+#line2{
+  margin: 6px 5px;
+}
+
+.web-content{
+  width: 65%;
+  height: 60vh;
+  float: left;
+  font-family: 'Marvel', sans-serif;
+  margin: 20px;
+  font-size: 22px;
+  border: 2px solid black;
+  padding: 30px;
+  text-align: right;
+}
+
+.team-about{
+  position: relative;
+  height: 90vh;
+  width: 100%;
+  display: block;
+  margin-top: 100px;  
+}
+
+.img-about{
+  width: 27%;
+  height: 90vh;
+  float: left;
+  background: url('../../../assets/image/about/about-bg.jpg');
+  background-size: cover;
+}
+.team-member{
+  width: 70%;
+  float: left;
+  margin: 15px;
+  margin-bottom: 0px;
+  display: block;
+  padding-left: 20px;
+}
+
+.team-1{
+  float: left;
+  margin: 0 5px;
+  border: 3px solid black;
+}
+.team-1 img{
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 20px;
+  width: 200px;
+  height: 200px;
+}
+
+.team-1 p{
+  background: #c5c5c5;
+  height: 50px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 25px;
+  padding-top: 10px;
+  font-family: 'Marvel', sans-serif;
+}
+
+.desc-team{
+  width: 300px;
+  margin: 40px;
+  font-size: 25px;
+  padding-top: 40px;
+  float: left; 
+  font-family: 'Dosis', sans-serif;
+  width: 700px;
+}
+
+.credit-team{
+  font-family: 'Marvel', sans-serif;
+  color: red;
+  float: left;
+  width: 500px;
+  margin: 90px;
+  font-size: 25px;
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-left: 800px;
+}
+
+.logo-header{
+  position: absolute;
+  top: 5vh;
+  left: 5vh;
+  width: 200px;
+  height: 8vh;
+}
+
+.logo-header img{
+  height: 100px;
+  background-size: cover;
+}

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('assets/image/icon/logo.png') }}" type="image/x-icon">
-    <meta name="description" content="Ruang Organisasi">
+    <meta name="description" content="Ruang Meeting">
     <title>@yield('title')</title>
     
     <link rel="stylesheet" href="{{ asset('assets/page/web/assets/mobirise-icons/mobirise-icons.css') }}">

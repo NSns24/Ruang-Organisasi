@@ -12,7 +12,7 @@
 
     <style type="text/css">
         #info3-17 {
-            background-image: url('{{ asset("assets/image/background/projectList_header.jpg") }}');
+            background-image: url('{{ asset("assets/image/background/home_header.jpg") }}');
         }
 
         #features16-13 {
@@ -249,10 +249,10 @@
                         project_id: '{{ $project->id }}',
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function() {
+                    success: () => {
                         window.location.href = '{{ url('project/'.$project->id) }}';
                     },
-                    error: function(xhr) {
+                    error: (xhr) => {
                         Swal({
                             type: 'error',
                             title: 'Error while processing data'

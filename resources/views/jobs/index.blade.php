@@ -11,7 +11,7 @@
 
     <style>
         #content5-1x {
-            background-image: url('{{ asset("assets/image/background/projectList_header.jpg") }}');
+            background-image: url('{{ asset("assets/image/background/job_header.jpg") }}');
         }
 
         #calendar {
@@ -47,11 +47,11 @@
     </section>
 
     <section class="progress-bars1 cid-rcxFvkC2tU" id="progress-bars1-1v">
-        @if($project->id == auth()->id())
+        @if($project->user_id == auth()->id())
             <a class="btn btn-md btn-primary display-4" data-toggle="modal" data-target="#modal-assign-job" id="btn-assign-job">Assign Job</a>
             <br style="clear: both;">
 
-            <!-- Modal Login -->
+            <!-- Modal Assign Job -->
             <div class="modal fade" id="modal-assign-job" tabindex="-1" role="dialog" aria-labelledby="modalAssignJob" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">

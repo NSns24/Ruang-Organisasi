@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
                 'user_id' => 1,
                 'project_name' => 'TesTes',
                 'project_description' => 'TesTes Project',
-                'project_deadline' => '2019-01-10', 
+                'project_deadline' => '2019-01-30', 
                 'project_progress' => 0,
                 'project_image' => '1_1_TesTes.jpg'
             ]

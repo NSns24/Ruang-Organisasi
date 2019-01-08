@@ -10,7 +10,8 @@ use App\Job;
 
 class JobController extends Controller
 {
-    public function index($id) {
+    public function index($id) 
+    {
         if(Helper::checkProjectAccess($id, auth()->id())) {
             $project = Project::findOrFail($id);
             $friends = ProjectDetail::where('project_id', $id)->get();
@@ -53,7 +54,8 @@ class JobController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request) 
+    {
         $project = Project::findOrFail($request->project_id);
 
         $rules = [
@@ -86,7 +88,8 @@ class JobController extends Controller
     }
 
     //ajax request
-    public function changeSchedule(Request $request) {
+    public function changeSchedule(Request $request) 
+    {
         if(!Helper::checkProjectOwner($request->project_id, auth()->id())) {
             return Helper::errorProcessJson();
         }
@@ -104,7 +107,8 @@ class JobController extends Controller
     }
 
     //ajax request
-    public function deleteJob(Request $request) {
+    public function deleteJob(Request $request) 
+    {
         if(!Helper::checkProjectOwner($request->project_id, auth()->id())) {
             return Helper::errorProcessJson();
         }

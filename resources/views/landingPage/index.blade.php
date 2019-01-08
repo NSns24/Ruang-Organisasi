@@ -1,7 +1,7 @@
 @extends('layout.index')
 
 @section('title')
-    RuangOrganisasi    
+    RuangMeeting    
 @endsection
 
 @section('css')
@@ -22,7 +22,7 @@
                     <span class="navbar-logo">
                         <img src="{{ asset('assets/image/icon/logo.png') }}" style="height: 4.5rem;">  
                     </span>
-                    <span class="navbar-caption-wrap"><span class="navbar-caption text-primary display-5">RuangOrganisasi</span></span>
+                    <span class="navbar-caption-wrap"><span class="navbar-caption text-primary display-5">RuangMeeting</span></span>
                 </div>
             </div>
         </nav>
@@ -34,7 +34,7 @@
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="mbr-white col-md-10">
-                    <h1 class="mbr-section-title align-center mbr-bold pb-3 mbr-fonts-style display-1">Ruang Organisasi</h1>
+                    <h1 class="mbr-section-title align-center mbr-bold pb-3 mbr-fonts-style display-1">Ruang Meeting</h1>
                     <p class="mbr-text align-center pb-3 mbr-fonts-style display-5">
                         A place for you and your team to manage an event without spending too much effort, to organize your event properly, and finally make your jobs easier.
                         <br>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="card-box">
                         <h4 class="card-title py-3 mbr-fonts-style display-5">Increase Your Success</h4>
-                        <p class="mbr-text mbr-fonts-style display-7">Your events will be a big success and will be organized properly with RuangOrganisasi. Your productivity will increase rapidly.</p>
+                        <p class="mbr-text mbr-fonts-style display-7">Your events will be a big success and will be organized properly with RuangMeeting. Your productivity will increase rapidly.</p>
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                     </div>
                     <div class="card-box">
                         <h4 class="card-title py-3 mbr-fonts-style display-5">Saving Your Time</h4>
-                        <p class="mbr-text mbr-fonts-style display-7">With RuangOrganisasi, your time to manage your events will be saved. Many things will be organized by RuangOrganisasi.</p>
+                        <p class="mbr-text mbr-fonts-style display-7">With RuangMeeting, your time to manage your events will be saved. Many things will be organized by RuangMeeting.</p>
                     </div>
                 </div>
 
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <a class="btn btn-md btn-info display-4" href="#">About US</a>
+                <a class="btn btn-md btn-info display-4" href="{{ url('about-us') }}">About US</a>
             </div>
         </div>
     </section>
